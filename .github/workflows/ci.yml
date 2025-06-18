@@ -14,9 +14,12 @@ jobs:
       postgres:
         image: postgres:15
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: test_db
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_SERVER: ${{ secrets.POSTGRES_SERVER }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          STANDARD_DATABASE: ${{ secrets.STANDARD_DATABASE }}
+          TEST_DATABASE_URL: postgresql+asyncpg://postgres:password@localhost:5432/test_db
         ports:
           - 5432:5432
         options: >-
@@ -24,14 +27,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
-    env:
-      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-      POSTGRES_SERVER: ${{ secrets.POSTGRES_SERVER }}
-      POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
-      STANDARD_DATABASE: ${{ secrets.STANDARD_DATABASE }}
-      TEST_DATABASE_URL: postgresql+asyncpg://postgres:password@localhost:5432/test_db
 
     steps:
     - name: Checkout repository
